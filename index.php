@@ -6,6 +6,7 @@ session_start();
 
 	$user_data = check_login($con);
 
+	//Post comment
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
 		$comment = $_POST['comment'];
@@ -13,24 +14,46 @@ session_start();
 
 		if(!empty($comment) && !is_numeric($comment))
 		{
-			//Sanatize input
-			$comment = addslashes($comment);
 			//Save comment to db
-			$query = "insert into comments (user_name,comment) values ('$user_name','$comment')";
-			mysqli_query($con, $query);
+			try{
+			    // Prepare the query
+			    $query = "INSERT INTO comments (user_name,comment) VALUES (?, ?)";
+			    $stmt = mysqli_prepare($con, $query);
+
+			    // Bind the parameters
+			    mysqli_stmt_bind_param($stmt, "ss", $user_name, $comment);
+
+			    // Execute the prepared statement
+			    mysqli_stmt_execute($stmt);
+
+			    // Close the prepared statement
+			    mysqli_stmt_close($stmt);
+			}
+			catch(Exception $e){
+				echo "Could not save comment to database!<br><br>";
+			}
 		}
 		else{
-			echo "Please enter valid information (comment must not be empty or numeric)<br><br>";
+			echo "Please enter valid information (comment must not be empty or only numbers)<br><br>";
 		}
 	}
 
+	//Get all comments
 	$commentQuery = "SELECT * FROM comments";
-	$commentResults = mysqli_query($con, $commentQuery);
+	$commentResults = null;
 
-	if(!$commentResults || !mysqli_num_rows($commentResults) > 0)
-	{
+	try{
+		$commentResults = mysqli_query($con, $commentQuery);
+		if(!$commentResults || !mysqli_num_rows($commentResults) > 0)
+		{
+			echo "Could not read comments from database!<br>";
+		}
+	}
+	catch(Exception $e){
 		echo "Could not read comments from database!<br>";
 	}
+
+	
 
 ?>
 

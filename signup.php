@@ -6,6 +6,7 @@ session_start();
 
 	logged_in_redirect();
 
+	// Sign up
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
 		$user_name = $_POST['user_name'];
@@ -13,14 +14,27 @@ session_start();
 
 		if(!empty($user_name) && !empty($password) && !is_numeric($user_name) && !str_contains($user_name, '\'') && !str_contains($user_name, '"') && !str_contains($user_name, '\\') && !str_contains($password, '\'') && !str_contains($password, '"') && !str_contains($password, '\\'))
 		{
-			//Sanatize input
-			$user_name = addslashes($user_name);
-			$password = addslashes($password);
-			//Save to db
-			$user_id = random_num(20);
-			$query = "insert into users (user_id,user_name,password) values ('$user_id','$user_name','$password')";
+			// Insert new user into db
+			try {
+			    // Generate random user_id
+			    $user_id = random_num(20);
 
-			mysqli_query($con, $query);
+			    // Prepare the query
+			    $query = "INSERT INTO users (user_id, user_name, password) VALUES (?, ?, ?)";
+			    $stmt = mysqli_prepare($con, $query);
+
+			    // Bind the parameters
+			    mysqli_stmt_bind_param($stmt, "iss", $user_id, $user_name, $password);
+
+			    // Execute the prepared statement
+			    mysqli_stmt_execute($stmt);
+
+			    // Close the prepared statement
+			    mysqli_stmt_close($stmt);
+
+			} catch (Exception $e) {
+				echo "Something went wrong.<br><br>";
+			}
 
 			header("Location: login.php");
 			die;

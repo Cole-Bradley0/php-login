@@ -6,6 +6,7 @@ session_start();
 
 	logged_in_redirect();
 
+	// Attempt login
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
 		$user_name = $_POST['user_name'];
@@ -13,13 +14,19 @@ session_start();
 
 		if(!empty($user_name) && !empty($password) && !is_numeric($user_name) && !str_contains($user_name, '\'') && !str_contains($user_name, '"') && !str_contains($user_name, '\\'))
 		{
-			//Sanatize input
-			$user_name = addslashes($user_name);
-			$password = addslashes($password);
-			//Read from db
-			$query = "select * from users where user_name = '$user_name' limit 1";
-			$result = mysqli_query($con, $query);
+			// Read user from db
+			$result = null;
+			try{
+				$statement = $con->prepare("SELECT * FROM users WHERE user_name = ? LIMIT 1");
+				$statement->bind_param("s", $user_name);
+				$statement->execute();
+				$result = $statement->get_result();
+			}
+			catch(Exception $e){
+				echo "Something went wrong.<br><br>";
+			}
 
+			// Check result
 			if($result && mysqli_num_rows($result) > 0)
 			{
 				$user_data = mysqli_fetch_assoc($result);

@@ -1,11 +1,11 @@
 <?php
-//Connect to db and get user_data
+	// Connect to db and get user_data
 	session_start();
 	include("connection.php");
 	include("functions.php");
 	$user_data = check_login($con);
 
-//Delete comment if authorized
+	// Delete comment if authorized
 	if($_SERVER['REQUEST_METHOD'] == "GET"){
 		if(!isset($_GET["id"])){
 			header("location: index.php");

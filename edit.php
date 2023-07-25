@@ -1,11 +1,11 @@
 <?php
-//Connect to db and get user_data
+	//Connect to db and get user_data
 	session_start();
 	include("connection.php");
 	include("functions.php");
 	$user_data = check_login($con);
 
-//Read in existing comment
+	//Read in existing comment
 	if($_SERVER['REQUEST_METHOD'] == "GET"){
 		if(!isset($_GET["id"])){
 			header("location: index.php");
@@ -13,9 +13,18 @@
 		}
 	}
 
+	$commentResults = null;
 	$id = $_GET["id"];
-	$commentQuery = "SELECT * FROM comments WHERE id = $id";
-	$commentResults = mysqli_query($con, $commentQuery);
+	try{
+		// Get comment
+		$statement = $con->prepare("SELECT * FROM comments WHERE id = ?");
+		$statement->bind_param("i", $id);
+		$statement->execute();
+		$commentResults = $statement->get_result();
+	}
+	catch(Exception $e){
+		echo "Something went wrong.<br><br>";
+	}
 
 	if(!$commentResults)
 	{
@@ -31,7 +40,7 @@
 
 	$row = mysqli_fetch_array($commentResults);
 
-	//Validate authorization
+	// Validate authorization
 	if($row['user_name'] !== $user_data['user_name']){
 		echo "You do not have permission to edit this comment!";
 		echo "<br><a href='../index.php'>back</a>";
@@ -39,8 +48,9 @@
 	}
 	
 
-//Update comment
+	// Update comment
 	$edited_text = "";
+	$result = null;
 	if($_SERVER['REQUEST_METHOD'] == "POST"){
 		$edited_text = $_POST["edit_box"];
 
@@ -48,17 +58,31 @@
 			echo "Comment cannot be empty<br>";
 		}
 		else{
-			//Sanatize input
-			$edited_text = addslashes($edited_text);
-			$commentQuery = "UPDATE comments SET comment='$edited_text' WHERE id = $id";
-			$result = mysqli_query($con, $commentQuery);
-			if(!$result){
+			try{
+				// Prepare the query
+			    $query = "UPDATE comments SET comment=? WHERE id = ?";
+			    $stmt = mysqli_prepare($con, $query);
+
+			    // Bind the parameters
+			    mysqli_stmt_bind_param($stmt, "si", $edited_text, $id);
+
+			    // Execute the prepared statement
+			    mysqli_stmt_execute($stmt);
+
+			    // Get the result
+			    $stmt->get_result();
+
+			    // Close the prepared statement
+			    mysqli_stmt_close($stmt);
+
+			    // Return to index
+			    header("location: ../index.php");
+			}
+			catch(Exception $e){
 				echo "Could not update comment!<br>";
 			}
-			else{
-				header("location: ../index.php");
-				die();
-			}
+
+			die();
 		}
 	}
 ?>

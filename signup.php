@@ -33,14 +33,14 @@ session_start();
 			    mysqli_stmt_close($stmt);
 
 			} catch (Exception $e) {
-				echo "Something went wrong.<br><br>";
+				echo "<p class=\"text-white bg-danger\">Something went wrong.</p>";
 			}
 
 			header("Location: login.php");
 			die;
 		}
 		else{
-			echo "Please enter valid information";
+			echo "<p class=\"text-white bg-danger\">Please enter valid information</p>";
 		}
 	}
 
@@ -51,6 +51,7 @@ session_start();
 <html>
 <head>
 	<title>Signup</title>
+	<link href="bootstrap.min.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<style type="text/css">
@@ -60,15 +61,7 @@ session_start();
 		border-radius: 5px;
 		padding: 4px;
 		border: solid thin #aaa;
-		width: 97%;
-	}
-
-	#button{
-		padding: 10px;
-		width: 100px;
-		color: white;
-		background-color: lightblue;
-		border: none;
+		width: 100%;
 	}
 
 	#box{
@@ -82,15 +75,17 @@ session_start();
 
 	<div id="box">
 		<form method="post">
-			<div style="font-size: 20px; color: white;">Signup</div><br>
+			<div style="font-size: 26px; color: white; text-align:center">Signup</div><br>
 
 			<input id="text" type="text" name="user_name"><br><br>
 			<input id="text" type="password" name="password"><br><br>
 
-			<input id="button" type="submit" value="Signup"><br><br>
+			<input id="button" class="btn btn-primary" style="width:100%" type="submit" value="Signup"><br><br>
 
-			<a href="login.php">Click to login</a><br><br>
+			<a href="login.php" class="btn btn-primary" style="width:100%">Return to Login</a><br><br>
 		</form>
 	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js">
 </body>
 </html>

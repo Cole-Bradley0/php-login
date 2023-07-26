@@ -30,11 +30,11 @@ session_start();
 			    mysqli_stmt_close($stmt);
 			}
 			catch(Exception $e){
-				echo "Could not save comment to database!<br><br>";
+				echo "<p class=\"text-white bg-danger\">Could not save comment to database!</p><br>";
 			}
 		}
 		else{
-			echo "Please enter valid information (comment must not be empty or only numbers)<br><br>";
+			echo "<p class=\"text-white bg-danger\">Please enter valid information (comment must not be empty or only numbers)</p><br>";
 		}
 	}
 
@@ -46,11 +46,11 @@ session_start();
 		$commentResults = mysqli_query($con, $commentQuery);
 		if(!$commentResults || !mysqli_num_rows($commentResults) > 0)
 		{
-			echo "Could not read comments from database!<br>";
+			echo "<p class=\"text-white bg-danger\">Could not read comments from database!</p><br>";
 		}
 	}
 	catch(Exception $e){
-		echo "Could not read comments from database!<br>";
+		echo "<p class=\"text-white bg-danger\">Could not read comments from database!</p><br>";
 	}
 
 	
@@ -61,16 +61,19 @@ session_start();
 <html>
 <head>
 	<title>Index Page</title>
+	<link href="bootstrap.min.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body style="margin-left:50px">
 
-	Hello, <?=$user_data['user_name']?>. <a href="logout.php">Logout</a>
+	Hello, <?=$user_data['user_name']?>. <a href="logout.php" class="btn btn-sm btn-secondary">Logout</a>
+
 	<h1>PHP and MySQL login app</h1>
+
 	<h2>CRUD functions:</h2>
 	<form method="post">
 		<label>Comment:</label>
-		<input id="text" type="text" name="comment" ><br><br>
-		<input id="button" type="submit" value="Submit"><br><br>
+		<input id="text" type="text" name="comment" style="margin:10px">
+		<input id="button" class="btn btn-primary" type="submit"  value="Submit"><br><br>
 	</form>
 	<?php 
 	while($row = mysqli_fetch_array($commentResults)) {
@@ -78,12 +81,13 @@ session_start();
 	    echo "<br>" . $row['date'];
 	    if($user_data['user_name'] === $row['user_name']){
 	    	echo "
-	    	<br><a href='edit.php/?id=$row[id]'>edit</a>
-	    	<br><a href='delete.php/?id=$row[id]'>delete</a>
+	    	<br><a href='edit.php/?id=$row[id]' class=\"btn btn-sm btn-secondary\">edit</a>
+	    	<a href='delete.php/?id=$row[id]' class=\"btn btn-sm btn-danger\">delete</a>
 	    	";
 	    }
 	    echo "<br><br>";
 	}?>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js">
 </body>
 </html>

@@ -90,9 +90,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Index Page</title>
+	<title>Edit</title>
+	<link href="../bootstrap.min.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body style="margin-left:50px">
 
 	Hello, <?=$user_data['user_name']?>. <a href="../logout.php">Logout</a>
 
@@ -103,14 +104,16 @@
 		<form method="post">
 			<label>Edit Comment:</label>
 			<!--<input type="text" name="id" value="<?=$id?>"> -->
-			<input type="text" name="edit_box" value="<?=$row['comment']?>">
-			<input id="button" type="submit" value="Edit">
+			<input type="text" name="edit_box" style="margin:10px" value="<?=$row['comment']?>">
+			<input id="button" class="btn btn-primary" type="submit" value="Edit">
 		</form>
 		
 	</div>
 	<br>
 	<br>
-	<a href="../index.php">back</a>
+	<a href="../index.php" class="btn btn-primary">back</a>
 
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js">
 </body>
 </html>

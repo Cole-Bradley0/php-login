@@ -38,10 +38,10 @@ session_start();
 					die;
 				}
 			}
-			echo "Username or password is incorrect";
+			echo "<p class=\"text-white bg-danger\">Username or password is incorrect</p>";
 		}
 		else{
-			echo "Please enter valid information";
+			echo "<p class=\"text-white bg-danger\">Please enter valid information</p>";
 		}
 	}
 
@@ -52,6 +52,7 @@ session_start();
 <html>
 <head>
 	<title>Login</title>
+	<link href="bootstrap.min.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<style type="text/css">
@@ -61,15 +62,7 @@ session_start();
 		border-radius: 5px;
 		padding: 4px;
 		border: solid thin #aaa;
-		width: 97%;
-	}
-
-	#button{
-		padding: 10px;
-		width: 100px;
-		color: white;
-		background-color: lightblue;
-		border: none;
+		width: 100%;
 	}
 
 	#box{
@@ -83,15 +76,17 @@ session_start();
 
 	<div id="box">
 		<form method="post">
-			<div style="font-size: 20px; color: white;">Login</div><br>
+			<div style="font-size: 26px; color: white; text-align:center">Login</div><br>
 
 			<input id="text" type="text" name="user_name"><br><br>
 			<input id="text" type="password" name="password"><br><br>
 
-			<input id="button" type="submit" value="Login"><br><br>
+			<input id="button" type="submit" class="btn btn-primary" style="width:100%" value="Login"><br><br>
 
-			<a href="signup.php">Click to signup</a><br><br>
+			<a href="signup.php" class="btn btn-primary" style="width:100%">Don't have an account? Signup!</a><br><br>
 		</form>
 	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js">
 </body>
 </html>

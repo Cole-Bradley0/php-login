@@ -62,6 +62,7 @@ session_start();
 <head>
 	<title>Index Page</title>
 	<link href="bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body style="margin-left:50px">
 
@@ -71,13 +72,14 @@ session_start();
 
 	<h2>CRUD functions:</h2>
 	<form method="post">
-		<label>Comment:</label>
+		<i class="bi bi-chat-right-dots-fill"></i>
 		<input id="text" type="text" name="comment" style="margin:10px">
 		<input id="button" class="btn btn-primary" type="submit"  value="Submit"><br><br>
 	</form>
 	<?php 
 	while($row = mysqli_fetch_array($commentResults)) {
-	    echo $row['user_name'] . ": " . $row['comment'];
+		echo "<div class=\"p-2 rounded shadow\" style=\"width:550px\">";
+	    echo "<b>" . $row['user_name'] . "</b>" . ": " . $row['comment'];
 	    echo "<br>" . $row['date'];
 	    if($user_data['user_name'] === $row['user_name']){
 	    	echo "
@@ -85,7 +87,7 @@ session_start();
 	    	<a href='delete.php/?id=$row[id]' class=\"btn btn-sm btn-danger\">delete</a>
 	    	";
 	    }
-	    echo "<br><br>";
+	    echo "</div><br>";
 	}?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js">

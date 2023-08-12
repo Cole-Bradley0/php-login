@@ -3,5 +3,5 @@ Web app built using PHP and MySQL.  It has login, signup, a comment board with e
 
 These files can be used in a PHP compatible web server like xampp.  Create a database called "php_login_db" in PhpMyAdmin and import php_login_db.sql.
 
-Demo:
-https://youtu.be/33L5AagqDWw
+Demo video:
+[![Video](https://img.youtube.com/vi/33L5AagqDWw/maxresdefault.jpg)](https://youtu.be/33L5AagqDWw)
